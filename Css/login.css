@@ -1,0 +1,162 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Courier New", monospace;
+    color: white;
+    background-color: #263d27;
+}
+
+.fundo-animado {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.mapa {
+    position: absolute;
+    inset: 0;
+
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    opacity: 0;
+    animation: trocarMapa 30s infinite;
+}
+
+.mapa-1 {
+    background-image: url("../Imgs/Background-Phases/Phase1-Minecraft.jpg");
+    animation-delay: 0s;
+}
+
+.mapa-2 {
+    background-image: url("../Imgs/Background-Phases/Phase2-Minecraft.jpg");
+    animation-delay: 5s;
+}
+
+.mapa-3 {
+    background-image: url("../Imgs/Background-Phases/Phase3-TLOU.jpg");
+    animation-delay: 10s;
+}
+
+.mapa-4 {
+    background-image: url("../Imgs/Background-Phases/Phase4-HK.jpg");
+    animation-delay: 15s;
+}
+
+@keyframes trocarMapa {
+    0%, 100% {
+        opacity: 0;
+    }
+
+    5%, 25% {
+        opacity: 1;
+    }
+
+    30% {
+        opacity: 0;
+    }
+}
+
+.sobreposicao {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.container-login {
+    position: relative;
+    z-index: 2;
+
+    min-height: 100vh;
+    padding: 30px 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cabecalho-login {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.cabecalho-login h1 {
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: #f3e8c9;
+}
+
+.cabecalho-login p {
+    margin-top: 10px;
+}
+
+#form-login {
+    width: 100%;
+    max-width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.campo {
+    padding: 12px;
+    background-color: #573a28;
+    border: 2px solid #d9c69a;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.campo input {
+    width: 100%;
+    padding: 10px;
+
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+#botao-jogar,
+#botao-referencias {
+    padding: 14px;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#botao-jogar {
+    color: white;
+    background-color: #385c35;
+    border: 2px solid #d9c69a;
+}
+
+#botao-referencias {
+    color: white;
+    background-color: #573a28;
+    border: 2px solid #d9c69a;
+}
+
+#botao-jogar:hover,
+#botao-referencias:hover {
+    filter: brightness(1.2);
+}
+
+.rodape-login {
+    margin-top: 20px;
+    text-align: center;
+}
