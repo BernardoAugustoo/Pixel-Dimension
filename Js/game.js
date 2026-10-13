@@ -12,12 +12,29 @@ class Sprite {
     constructor({position, velocity}) {
         this.position = position;
         this.velocity = velocity;
+        this.width = 50;
         this.height = 150;
+        this.attackBox = {
+            position: this.position,
+            width: 100,
+            height: 50
+        };
+        this.isAttacking;
     }
 
     draw() {
         ctx.fillStyle = 'red';
-        ctx.fillRect(this.position.x, this.position.y, 50, this.height);
+        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+
+        if(this.isAttacking) { 
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(
+                this.attackBox.position.x, 
+                this.position.y, 
+                this.attackBox.width, 
+                this.attackBox.height
+            )
+        }
     }
 
     update() {
@@ -31,6 +48,14 @@ class Sprite {
         else {
             this.velocity.y += gravity
         }
+    }
+
+    attack() {
+        this.isAttacking = true;
+
+        setTimeout(() => {
+            this.isAttacking = false;
+        }, 100)
     }
 }
 
@@ -86,6 +111,16 @@ function animate() {
     else if(keys.d.pressed && lastKey === 'd') {
         player.velocity.x = 4;
     }
+
+    if( player.attackBox.position.x + player.attackBox.width >= enemy.position.x &&
+        player.attackBox.position.x <= enemy.position.x + enemy.width &&
+        player.attackBox.position.y + player.attackBox.height >= enemy.position.y &&
+        player.attackBox.position.y <= enemy.position.y + enemy.height &&
+        player.isAttacking
+    ) {
+        player.isAttacking = false;
+        console.log('OUCH!');
+    }
 }
 
 animate()
@@ -108,6 +143,9 @@ window.addEventListener('keydown', (event) => {
                 player.velocity.y = -20;
                 player.estaNoChao = false;
             }
+            break;
+        case ' ':
+            player.attack()
             break;
     }
 })
