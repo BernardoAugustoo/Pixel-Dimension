@@ -1,61 +1,18 @@
+import { Sprite } from './sprite.js';
+import { player } from './player.js'
+import { enemy } from './enemy.js'
+import { checkCollision } from './collision.js'
+
+
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
 canvas.width = 1024;
 canvas.height = 576;
 
-ctx.fillRect(0, 0, canvas.width, canvas.height)
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 const gravity = 0.5;
-
-class Sprite {
-    constructor({position, velocity}) {
-        this.position = position;
-        this.velocity = velocity;
-        this.height = 150;
-    }
-
-    draw() {
-        ctx.fillStyle = 'red';
-        ctx.fillRect(this.position.x, this.position.y, 50, this.height);
-    }
-
-    update() {
-        this.draw()
-        this.position.y += this.velocity.y;
-        this.position.x += this.velocity.x  
-
-        if(this.position.y + this.height + this.velocity.y >= canvas.height) {
-            this.velocity.y = 0;
-        }
-        else {
-            this.velocity.y += gravity
-        }
-    }
-}
-
-const player = new Sprite({
-    position: {
-        x: 200,
-        y: 0
-    },
-    velocity: {
-        x: 0,
-        y: 0
-    },
-    estaNoChao: true,
-})
-
-const enemy = new Sprite({
-    position: {
-        x: 320,
-        y: 0
-    },
-    velocity: {
-        x: 0,
-        y: 0
-    }
-})
 
 const keys = {
     a: {
@@ -82,9 +39,18 @@ function animate() {
 
     if(keys.a.pressed && lastKey === 'a') {
         player.velocity.x = -4;
+        player.direction = -1;
     }
     else if(keys.d.pressed && lastKey === 'd') {
         player.velocity.x = 4;
+        player.direction = 1;
+    }
+
+    if(player.isAttacking && checkCollision({
+        attacker: player, 
+        target: enemy})) {
+        player.isAttacking = false;
+        console.log('OUCH!');
     }
 }
 
@@ -92,16 +58,19 @@ animate()
 
 window.addEventListener('keydown', (event) => {
     switch(event.key) {
+        case 'D':
         case 'd':
             keys.d.pressed = true;
             lastKey = 'd'
             break;
+        case 'A':
         case 'a':
             keys.a.pressed = true;
             lastKey = 'a'
             break;
+        case 'W':
         case 'w':
-            if (player.position.y + player.height === canvas.height) {
+            if (player.position.y === canvas.height) {
                 player.estaNoChao = true;
             }
             if(player.estaNoChao) {
@@ -109,14 +78,19 @@ window.addEventListener('keydown', (event) => {
                 player.estaNoChao = false;
             }
             break;
+        case ' ':
+            player.attack()
+            break;
     }
 })
 
 window.addEventListener('keyup', (event) => {
     switch(event.key) {
+        case 'D':
         case 'd':
             keys.d.pressed = false;
             break;
+        case 'A':
         case 'a':
             keys.a.pressed = false;
             break;
