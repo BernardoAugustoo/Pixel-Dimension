@@ -27,42 +27,31 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
 
+    filter: blur(5px);
+
     opacity: 0;
-    animation: trocarMapa 30s infinite;
+    transition: opacity 1s ease;
 }
 
 .mapa-1 {
     background-image: url("../Imgs/Background-Phases/Phase1-Minecraft.jpg");
-    animation-delay: 0s;
 }
 
 .mapa-2 {
-    background-image: url("../Imgs/Background-Phases/Phase2-Minecraft.jpg");
-    animation-delay: 5s;
+    background-image: url("../Imgs/Background-Phases/Phase2-Fortnite.jpg");
 }
 
 .mapa-3 {
     background-image: url("../Imgs/Background-Phases/Phase3-TLOU.jpg");
-    animation-delay: 10s;
 }
 
 .mapa-4 {
     background-image: url("../Imgs/Background-Phases/Phase4-HK.jpg");
-    animation-delay: 15s;
 }
 
-@keyframes trocarMapa {
-    0%, 100% {
-        opacity: 0;
-    }
-
-    5%, 25% {
-        opacity: 1;
-    }
-
-    30% {
-        opacity: 0;
-    }
+.mapa.ativo {
+    opacity: 1;
+    z-index: 1;
 }
 
 .sobreposicao {
@@ -75,6 +64,11 @@ body {
 }
 
 .container-login {
+    --cor-painel: #573a28;
+    --cor-borda: #789b45;
+    --cor-botao: #385c35;
+    --cor-texto: #f3e8c9;
+
     position: relative;
     z-index: 2;
 
@@ -87,15 +81,59 @@ body {
     align-items: center;
 }
 
+.container-login,
+#form-login,
+.campo,
+.campo label,
+.campo input,
+#botao-jogar,
+#botao-referencias,
+.rodape-login {
+    transition:
+        background-color 1s ease,
+        border-color 1s ease,
+        color 1s ease;
+}
+
+.tema-minecraft {
+    --cor-painel: #573a28;
+    --cor-borda: #789b45;
+    --cor-botao: #385c35;
+    --cor-texto: #f3e8c9;
+}
+
+.tema-fortnite {
+    --cor-painel: #263747;
+    --cor-borda: #52c7e8;
+    --cor-botao: #4658a8;
+    --cor-texto: #f0f7ff;
+}
+
+.tema-tlou {
+    --cor-painel: #29372b;
+    --cor-borda: #657a50;
+    --cor-botao: #43583b;
+    --cor-texto: #e1e5d5;
+}
+
+.tema-hollow-knight {
+    --cor-painel: #182b40;
+    --cor-borda: #65c9d4;
+    --cor-botao: #24546b;
+    --cor-texto: #e2f5ff;
+}
+
 .cabecalho-login {
     text-align: center;
     margin-bottom: 30px;
 }
 
 .cabecalho-login h1 {
-    font-size: clamp(2rem, 6vw, 4rem);
-    color: #f3e8c9;
+    font-family: "Press Start 2P", monospace;
+    font-size: clamp(1.4rem, 4vw, 2.5rem);
+    color: var(--cor-texto);
 }
+
 
 .cabecalho-login p {
     margin-top: 10px;
@@ -104,22 +142,31 @@ body {
 #form-login {
     width: 100%;
     max-width: 400px;
+    padding: 20px;
 
     display: flex;
     flex-direction: column;
     gap: 15px;
+
+    background-color: var(--cor-painel);
+    border: 3px solid var(--cor-borda);
+    border-radius: 10px;
 }
 
 .campo {
     padding: 12px;
-    background-color: #573a28;
-    border: 2px solid #d9c69a;
+
+    background-color: var(--cor-painel);
+    border: 2px solid var(--cor-borda);
+    border-radius: 10px;
 }
 
 .campo label {
     display: block;
     margin-bottom: 8px;
+
     font-weight: bold;
+    color: var(--cor-texto);
 }
 
 .campo input {
@@ -128,27 +175,33 @@ body {
 
     font-family: inherit;
     font-size: 1rem;
+    color: white;
+
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--cor-borda);
+    border-radius: 5px;
 }
 
 #botao-jogar,
 #botao-referencias {
     padding: 14px;
+
     font-family: inherit;
     font-weight: bold;
     font-size: 1rem;
+
     cursor: pointer;
+    color: white;
 }
 
 #botao-jogar {
-    color: white;
-    background-color: #385c35;
-    border: 2px solid #d9c69a;
+    background-color: var(--cor-botao);
+    border: 2px solid var(--cor-borda);
 }
 
 #botao-referencias {
-    color: white;
-    background-color: #573a28;
-    border: 2px solid #d9c69a;
+    background-color: var(--cor-painel);
+    border: 2px solid var(--cor-borda);
 }
 
 #botao-jogar:hover,
@@ -159,4 +212,5 @@ body {
 .rodape-login {
     margin-top: 20px;
     text-align: center;
+    color: var(--cor-texto);
 }
