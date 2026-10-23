@@ -1,0 +1,65 @@
+@font-face {
+    font-family: "Press Start 2P";
+    src: url("../Font/Press_Start_2P/PressStart2P-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.player-stats {
+    width: fit-content;
+    position: fixed;
+    right: 3%;
+    top: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.player-name-div {
+    color: white;
+    font-family: "Press Start 2P";
+}
+
+.player-name-div p{
+    font-size: 25px;
+    display: inline;
+    margin: 0;
+}
+
+#player-name {
+    color: gray;
+}
+
+.score-bar {
+    color: white;
+}
+
+.score-bar p {
+    font-size: 25px;
+    font-family: "Press Start 2P";
+    margin: 0;
+}
+.health-bar {
+    width: 12vw;
+    height: 30px;
+    background-color: red;
+    border: 2px solid white;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.health-bar div {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background-color: lightgreen;
+}

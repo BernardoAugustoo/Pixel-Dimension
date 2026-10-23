@@ -1,8 +1,8 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = 1024;
-canvas.height = 576;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -24,6 +24,8 @@ export class Sprite {
         };
         this.isAttacking;
         this.direction = 1;
+        this.health = 100;
+        this.score = 0;
     }
 
     draw() {

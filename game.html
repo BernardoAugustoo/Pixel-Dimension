@@ -3,11 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Css/game.css">
     <title>TP2 - JOGO</title>
 </head>
 <body>
     <canvas></canvas>
 
+    <div class="player-stats">
+        <div class="player-name-div">
+            <p id="label-name">Jogador:</p>
+            <p id="player-name"></p>
+        </div>
+        <div class="score-bar">
+            <p>Pontuação:</p>
+        </div>
+        <div class="health-bar">
+            <div id="health-points"></div>
+        </div>
+    </div>
+        
     <script type="module" src="Js/sprite.js"></script>
     <script type="module" src="Js/player.js"></script>
     <script type="module" src="Js/enemy.js"></script>

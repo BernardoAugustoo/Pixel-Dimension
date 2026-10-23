@@ -7,8 +7,8 @@ import { checkCollision } from './collision.js'
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-canvas.width = 1024;
-canvas.height = 576;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -34,9 +34,9 @@ function animate() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     enemy.update();
     player.update();
-
+    
     player.velocity.x = 0;
-
+    
     if(keys.a.pressed && lastKey === 'a') {
         player.velocity.x = -4;
         player.direction = -1;
@@ -45,21 +45,21 @@ function animate() {
         player.velocity.x = 4;
         player.direction = 1;
     }
-
+    
     if(player.isAttacking && checkCollision({
         attacker: player, 
         target: enemy})) {
-        player.isAttacking = false;
-        console.log('OUCH!');
+            player.isAttacking = false;
+            console.log('OUCH!');
     }
 }
 
-animate()
-
-window.addEventListener('keydown', (event) => {
-    switch(event.key) {
-        case 'D':
-        case 'd':
+    animate()
+    
+    window.addEventListener('keydown', (event) => {
+        switch(event.key) {
+            case 'D':
+                case 'd':
             keys.d.pressed = true;
             lastKey = 'd'
             break;
@@ -96,3 +96,6 @@ window.addEventListener('keyup', (event) => {
             break;
     }
 })
+
+let playerNameEl = document.querySelector('#player-name')
+let inserdName = localStorage.getItem('nomeJogador');

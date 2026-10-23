@@ -31,7 +31,7 @@ formulario.addEventListener('submit', function (evento) {
 
     campoSenha.value = '';
 
-    window.location.href = 'index.html';
+    window.location.href = 'game.html';
 
 });
 
