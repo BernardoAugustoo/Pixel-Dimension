@@ -10,3 +10,5 @@ export const enemy = new Sprite({
         y: 0
     }
 })
+
+window.enemy = enemy;

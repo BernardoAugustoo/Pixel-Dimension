@@ -15,35 +15,59 @@ export class Sprite {
         this.width = 50;
         this.height = 150;
         this.attackBox = {
-            position: this.position,
-            width: 100,
-            height: 50
+            position: {
+                x: this.width/2,
+                y: -this.height + 50
+            },
+            width: 50,
+            height: 30
         };
         this.isAttacking;
+        this.direction = 1;
     }
 
     draw() {
+        ctx.save();
+        ctx.translate(this.position.x, this.position.y);
+
+        if(this.direction === -1) {
+            ctx.scale(-1, 1);
+        }
+
         ctx.fillStyle = 'red';
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+        ctx.fillRect(-this.width / 2, -this.height, this.width, this.height);
+
+        this.attackBox.position.x = this.width / 2;
+        this.attackBox.position.y = -this.height + 50;
 
         if(this.isAttacking) { 
             ctx.fillStyle = 'yellow';
             ctx.fillRect(
-                this.attackBox.position.x, 
-                this.position.y, 
-                this.attackBox.width, 
+                this.attackBox.position.x,
+                this.attackBox.position.y,
+                this.attackBox.width,
                 this.attackBox.height
             )
         }
+
+        ctx.restore();
     }
 
     update() {
         this.draw()
         this.position.y += this.velocity.y;
-        this.position.x += this.velocity.x  
+        this.position.x += this.velocity.x;
 
-        if(this.position.y + this.height + this.velocity.y >= canvas.height) {
+        if(this.position.x - this.width/2 <= 0) {
+            this.position.x = this.width/2
+        }
+        if(this.position.x + this.width/2 >= canvas.width) {
+            this.position.x = canvas.width - this.width / 2;
+        }
+
+        if(this.position.y + this.velocity.y >= canvas.height) {
             this.velocity.y = 0;
+            this.position.y = canvas.height;
         }
         else {
             this.velocity.y += gravity

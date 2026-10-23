@@ -1,6 +1,8 @@
 import { Sprite } from './sprite.js';
 import { player } from './player.js'
 import { enemy } from './enemy.js'
+import { checkCollision } from './collision.js'
+
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
@@ -37,17 +39,16 @@ function animate() {
 
     if(keys.a.pressed && lastKey === 'a') {
         player.velocity.x = -4;
+        player.direction = -1;
     }
     else if(keys.d.pressed && lastKey === 'd') {
         player.velocity.x = 4;
+        player.direction = 1;
     }
 
-    if( player.attackBox.position.x + player.attackBox.width >= enemy.position.x &&
-        player.attackBox.position.x <= enemy.position.x + enemy.width &&
-        player.attackBox.position.y + player.attackBox.height >= enemy.position.y &&
-        player.attackBox.position.y <= enemy.position.y + enemy.height &&
-        player.isAttacking
-    ) {
+    if(player.isAttacking && checkCollision({
+        attacker: player, 
+        target: enemy})) {
         player.isAttacking = false;
         console.log('OUCH!');
     }
@@ -57,16 +58,19 @@ animate()
 
 window.addEventListener('keydown', (event) => {
     switch(event.key) {
+        case 'D':
         case 'd':
             keys.d.pressed = true;
             lastKey = 'd'
             break;
+        case 'A':
         case 'a':
             keys.a.pressed = true;
             lastKey = 'a'
             break;
+        case 'W':
         case 'w':
-            if (player.position.y + player.height === canvas.height) {
+            if (player.position.y === canvas.height) {
                 player.estaNoChao = true;
             }
             if(player.estaNoChao) {
@@ -82,9 +86,11 @@ window.addEventListener('keydown', (event) => {
 
 window.addEventListener('keyup', (event) => {
     switch(event.key) {
+        case 'D':
         case 'd':
             keys.d.pressed = false;
             break;
+        case 'A':
         case 'a':
             keys.a.pressed = false;
             break;
