@@ -1,11 +1,7 @@
-import { Sprite } from './sprite.js';
+import { canvas, ctx} from "./canvas.js";
 import { player } from './player.js'
-import { enemy } from './enemy.js'
+import { enemy } from './enemy.js';
 import { checkCollision } from './collision.js'
-
-
-const canvas = document.querySelector('canvas');
-const ctx = canvas.getContext('2d');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -32,8 +28,12 @@ function animate() {
     window.requestAnimationFrame(animate);
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    enemy.update();
+
+    ctx.fillStyle = 'blue'
     player.update();
+
+    ctx.fillStyle = 'red'
+    enemy.updateEnemy(player);
     
     player.velocity.x = 0;
     
@@ -46,20 +46,22 @@ function animate() {
         player.direction = 1;
     }
     
-    if(player.isAttacking && checkCollision({
-        attacker: player, 
-        target: enemy})) {
-            player.isAttacking = false;
-            console.log('OUCH!');
+    if(player.isAttacking && checkCollision({attacker: player, target: enemy})) {
+        player.isAttacking = false;
+        console.log('JOGADOR ATACANDO!');
+    }
+    if(enemy.isAttacking && checkCollision({attacker: enemy, target: player})) {
+        player.isAttacking = false;
+        console.log('JOGADOR SENDO ATACADO!');
     }
 }
 
-    animate()
+animate()
     
-    window.addEventListener('keydown', (event) => {
-        switch(event.key) {
-            case 'D':
-                case 'd':
+window.addEventListener('keydown', (event) => {
+    switch(event.key) {
+        case 'D':
+        case 'd':
             keys.d.pressed = true;
             lastKey = 'd'
             break;

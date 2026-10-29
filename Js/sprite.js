@@ -36,7 +36,6 @@ export class Sprite {
             ctx.scale(-1, 1);
         }
 
-        ctx.fillStyle = 'red';
         ctx.fillRect(-this.width / 2, -this.height, this.width, this.height);
 
         this.attackBox.position.x = this.width / 2;
