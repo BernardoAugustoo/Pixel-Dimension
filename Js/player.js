@@ -9,6 +9,38 @@ export const player = new Sprite({
         x: 0,
         y: 0
     },
+    sprites: {
+        idle: {
+            src: '',
+            totalFrames: 7,
+            framesPerSprite: 10
+        },
+        walk: {
+            src: '',
+            totalFrames: 8,
+            framesPerSprite: 10
+        },
+        jump: {
+            src: '',
+            totalFrames: 7,
+            framesPerSprite: 10
+        }, 
+        attack: {
+            src: '',
+            totalFrames: 6,
+            framesPerSprite: 10
+        },
+        damage: {
+            src: '',
+            totalFrames: 6,
+            framesPerSprite: 10
+        },
+        death: {
+            src: '',
+            totalFrames: 7,
+            framesPerSprite: 10
+        },
+    },
 })
 
 player.estaNoChao = true;

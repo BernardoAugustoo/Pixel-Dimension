@@ -9,11 +9,23 @@ ctx.fillRect(0, 0, canvas.width, canvas.height)
 const gravity = 0.5;
 
 export class Sprite {
-    constructor({position, velocity}) {
+    constructor({position, velocity, sprites}) {
         this.position = position;
         this.velocity = velocity;
+
+        this.sprites = sprites;
+        this.currentSprite = this.sprites.idle;
+        this.image = new Image();
+        this.image.src = this.currentSprite.src;
+
         this.width = 50;
         this.height = 150;
+
+        this.currentFrame = 0;
+        this.elapseTime = 0;
+        this.totalFrames = this.currentSprite.totalFrames;
+        this.framesPerSprite = this.currentSprite.framesPerSprite;
+
         this.attackBox = {
             position: {
                 x: this.width/2,
@@ -56,6 +68,7 @@ export class Sprite {
 
     update() {
         this.draw()
+        
         this.position.y += this.velocity.y;
         this.position.x += this.velocity.x;
 
