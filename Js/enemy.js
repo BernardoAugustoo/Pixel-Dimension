@@ -94,6 +94,6 @@ export const enemy = new Enemy({
     },
 })
 
-
+enemy.damage = 25;
 window.enemy = enemy;
 

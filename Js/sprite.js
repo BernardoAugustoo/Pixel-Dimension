@@ -82,4 +82,14 @@ export class Sprite {
             this.isAttacking = false;
         }, 100)
     }
+
+    updateHP(target) {
+        const damage = this.damage;
+
+        if(target.health <= 0) {
+            target.health = 0;
+        }
+
+        target.health -= damage;
+    }
 }

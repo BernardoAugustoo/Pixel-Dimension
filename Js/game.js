@@ -8,6 +8,8 @@ canvas.height = window.innerHeight;
 
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+let healthPointsEL = document.querySelector("#health-points");
+
 const gravity = 0.5;
 
 const keys = {
@@ -36,6 +38,8 @@ function animate() {
     ctx.fillStyle = 'red'
     enemy.updateEnemy(player);
 
+    healthPointsEL.style.width = player.health + '%';
+
     
     player.velocity.x = 0;
     
@@ -55,7 +59,7 @@ function animate() {
     if(enemy.isAttacking && checkCollision({attacker: enemy, target: player})) {
         enemy.update();
         enemy.isAttacking = false;
-        console.log('JOGADOR SENDO ATACADO!');
+        enemy.updateHP(player);
     }
 }
 
@@ -115,3 +119,5 @@ window.addEventListener('keyup', (event) => {
 
 let playerNameEl = document.querySelector('#player-name')
 let inserdName = localStorage.getItem('nomeJogador');
+
+playerNameEl.innerHTML = inserdName;

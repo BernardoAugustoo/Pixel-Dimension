@@ -1,41 +1,41 @@
-const formulario = document.querySelector('#form-login');
-const campoNome = document.querySelector('#nome');
-const campoSenha = document.querySelector('#senha');
-const botaoReferencias = document.querySelector('#botao-referencias');
-const painelLogin = document.querySelector('#painel-login');
-const mapas = document.querySelectorAll('.mapa');
+const form = document.querySelector('#form-login');
+const inputName = document.querySelector('#nome');
+const inputPassword = document.querySelector('#senha');
+const referencesButton = document.querySelector('#botao-referencias');
+const loginPanel = document.querySelector('#painel-login');
+const maps = document.querySelectorAll('.mapa');
 
-const temas = [
+const themes = [
     'tema-minecraft',
     'tema-fortnite',
     'tema-tlou',
     'tema-hollow-knight'
 ];
 
-let faseAtual = 0;
+let currentPhase = 0;
 
-formulario.addEventListener('submit', function (evento) {
+form.addEventListener('submit', function (event) {
 
-    evento.preventDefault();
+    event.preventDefault();
 
-    const nome = campoNome.value.trim();
+    const name = inputName.value.trim();
 
-    if (nome === '') {
+    if (name === '') {
         alert('Digite seu nome!');
 
-        campoNome.focus();
+        inputName.focus();
         return;
     }
 
-    localStorage.setItem('nomeJogador', nome);
+    localStorage.setItem('nomeJogador', name);
 
-    campoSenha.value = '';
+    inputPassword.value = '';
 
     window.location.href = 'game.html';
 
 });
 
-botaoReferencias.addEventListener('click', function () {
+referencesButton.addEventListener('click', function () {
 
     window.location.href = 'referencias.html';
 
@@ -43,23 +43,23 @@ botaoReferencias.addEventListener('click', function () {
 
 function trocarFase() {
 
-    mapas.forEach(function (mapa) {
-        mapa.classList.remove('ativo');
+    maps.forEach(function (map) {
+        map.classList.remove('ativo');
     });
 
-    faseAtual = (faseAtual + 1) % mapas.length;
+    currentPhase = (currentPhase + 1) % maps.length;
 
-    mapas[faseAtual].classList.add('ativo');
+    maps[currentPhase].classList.add('ativo');
 
-    painelLogin.classList.remove(...temas);
+    loginPanel.classList.remove(...themes);
 
-    painelLogin.classList.add(temas[faseAtual]);
+    loginPanel.classList.add(themes[currentPhase]);
 
 }
 
 // Vetorzão que começae no Mine
-mapas[0].classList.add('ativo');
-painelLogin.classList.add(temas[0]);
+maps[0].classList.add('ativo');
+loginPanel.classList.add(themes[0]);
 
 // Troca o mapa e o tema juntos a cada 5 segundos
 setInterval(trocarFase, 5000);

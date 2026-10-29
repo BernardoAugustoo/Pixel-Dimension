@@ -12,5 +12,6 @@ export const player = new Sprite({
 })
 
 player.estaNoChao = true;
+player.damage = 20;
 
 window.player = player;
