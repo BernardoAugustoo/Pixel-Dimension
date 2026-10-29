@@ -57,6 +57,9 @@ function animate() {
 }
 
 animate()
+
+let canAttack = true;
+const attackCooldown = 300;
     
 window.addEventListener('keydown', (event) => {
     switch(event.key) {
@@ -81,7 +84,15 @@ window.addEventListener('keydown', (event) => {
             }
             break;
         case ' ':
-            player.attack()
+            if (canAttack) {
+                player.attack();
+
+                canAttack = false;
+
+                setTimeout(() => {
+                    canAttack = true;
+                }, attackCooldown)
+            }
             break;
     }
 })

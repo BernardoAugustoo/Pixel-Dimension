@@ -1,6 +1,9 @@
 import { canvas } from "./canvas.js";
 import { Sprite } from "./sprite.js";
 
+let enemyCanAttack = true;
+const enemyAttackCooldown = 300;
+
 export class Enemy extends Sprite {
     constructor({position, velocity}) {
         super({position, velocity});
@@ -13,7 +16,7 @@ export class Enemy extends Sprite {
         this.rightLimit = canvas.width - this.width / 2;
 
         this.rangeDistance = 400;
-        this.attackRange = 90;
+        this.attackRange = 95;
     }
     
     updateEnemy(player) {
@@ -54,7 +57,15 @@ export class Enemy extends Sprite {
             case "ATTACKING":
                 this.velocity.x = 0;
 
-                this.attack();
+                if (enemyCanAttack) {
+                    this.attack();
+
+                    enemyCanAttack = false;
+
+                    setTimeout(() => {
+                        enemyCanAttack = true
+                    }, enemyAttackCooldown)
+                }
                 
                 if (player.position.x > this.position.x) {
                     this.direction = 1;
