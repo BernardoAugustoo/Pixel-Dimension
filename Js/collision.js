@@ -1,5 +1,3 @@
-import { Sprite } from "./sprite.js";
-
 export const checkCollision = ({attacker, target}) => {
     const attackBoxRelativePosition = {
         x: attacker.direction === 1

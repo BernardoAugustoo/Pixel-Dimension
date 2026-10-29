@@ -29,11 +29,13 @@ function animate() {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    
     ctx.fillStyle = 'blue'
     player.update();
 
     ctx.fillStyle = 'red'
     enemy.updateEnemy(player);
+
     
     player.velocity.x = 0;
     
@@ -51,7 +53,8 @@ function animate() {
         console.log('JOGADOR ATACANDO!');
     }
     if(enemy.isAttacking && checkCollision({attacker: enemy, target: player})) {
-        player.isAttacking = false;
+        enemy.update();
+        enemy.isAttacking = false;
         console.log('JOGADOR SENDO ATACADO!');
     }
 }
