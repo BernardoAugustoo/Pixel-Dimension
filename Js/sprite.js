@@ -10,11 +10,24 @@ const gravity = 0.5;
 const altura_chao = 155;
 
 export class Sprite {
+    constructor({position, velocity, sprites}) {
     constructor({ position, velocity }) {
         this.position = position;
         this.velocity = velocity;
+
+        this.sprites = sprites;
+        this.currentSprite = this.sprites.idle;
+        this.image = new Image();
+        this.image.src = this.currentSprite.src;
+
         this.width = 50;
         this.height = 150;
+
+        this.currentFrame = 0;
+        this.elapseTime = 0;
+        this.totalFrames = this.currentSprite.totalFrames;
+        this.framesPerSprite = this.currentSprite.framesPerSprite;
+
         this.attackBox = {
             position: {
                 x: this.width / 2,
@@ -56,6 +69,9 @@ export class Sprite {
     }
 
     update() {
+        this.draw()
+        
+        this.position.y += this.velocity.y;
         const groundY = canvas.height - altura_chao;
 
         this.position.x += this.velocity.x;
