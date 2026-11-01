@@ -11,7 +11,6 @@ const altura_chao = 155;
 
 export class Sprite {
     constructor({position, velocity, sprites}) {
-    constructor({ position, velocity }) {
         this.position = position;
         this.velocity = velocity;
 
