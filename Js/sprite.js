@@ -7,16 +7,17 @@ canvas.height = window.innerHeight;
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 const gravity = 0.5;
+const altura_chao = 155;
 
 export class Sprite {
-    constructor({position, velocity}) {
+    constructor({ position, velocity }) {
         this.position = position;
         this.velocity = velocity;
         this.width = 50;
         this.height = 150;
         this.attackBox = {
             position: {
-                x: this.width/2,
+                x: this.width / 2,
                 y: -this.height + 50
             },
             width: 50,
@@ -32,7 +33,7 @@ export class Sprite {
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
 
-        if(this.direction === -1) {
+        if (this.direction === -1) {
             ctx.scale(-1, 1);
         }
 
@@ -41,7 +42,7 @@ export class Sprite {
         this.attackBox.position.x = this.width / 2;
         this.attackBox.position.y = -this.height + 50;
 
-        if(this.isAttacking) { 
+        if (this.isAttacking) {
             ctx.fillStyle = 'yellow';
             ctx.fillRect(
                 this.attackBox.position.x,
@@ -55,24 +56,30 @@ export class Sprite {
     }
 
     update() {
-        this.draw()
-        this.position.y += this.velocity.y;
+        const groundY = canvas.height - altura_chao;
+
         this.position.x += this.velocity.x;
 
-        if(this.position.x - this.width/2 <= 0) {
-            this.position.x = this.width/2
+        if (this.position.x - this.width / 2 <= 0) {
+            this.position.x = this.width / 2;
         }
-        if(this.position.x + this.width/2 >= canvas.width) {
+
+        if (this.position.x + this.width / 2 >= canvas.width) {
             this.position.x = canvas.width - this.width / 2;
         }
 
-        if(this.position.y + this.velocity.y >= canvas.height) {
+        this.position.y += this.velocity.y;
+
+        if (this.position.y >= groundY) {
+            this.position.y = groundY;
             this.velocity.y = 0;
-            this.position.y = canvas.height;
+            this.estaNoChao = true;
+        } else {
+            this.velocity.y += gravity;
+            this.estaNoChao = false;
         }
-        else {
-            this.velocity.y += gravity
-        }
+
+        this.draw();
     }
 
     attack() {
@@ -86,7 +93,7 @@ export class Sprite {
     updateHP(target) {
         const damage = this.damage;
 
-        if(target.health <= 0) {
+        if (target.health <= 0) {
             target.health = 0;
         }
 
