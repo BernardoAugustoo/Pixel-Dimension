@@ -7,28 +7,31 @@ canvas.height = window.innerHeight;
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 const gravity = 0.5;
+const altura_chao = 155;
 
 export class Sprite {
     constructor({position, velocity, sprites}) {
         this.position = position;
         this.velocity = velocity;
 
-        this.sprites = sprites;
-        this.currentSprite = this.sprites.idle;
+        this.sprites = sprites || {};
+        this.currentSprite = this.sprites.idle || null;
         this.image = new Image();
-        this.image.src = this.currentSprite.src;
+        if(this.currentSprite) {
+            this.image.src = this.currentSprite.src;
+        }
 
         this.width = 50;
         this.height = 150;
 
         this.currentFrame = 0;
         this.elapseTime = 0;
-        this.totalFrames = this.currentSprite.totalFrames;
-        this.framesPerSprite = this.currentSprite.framesPerSprite;
+        this.totalFrames = this.currentSprite?.totalFrames;
+        this.framesPerSprite = this.currentSprite?.framesPerSprite;
 
         this.attackBox = {
             position: {
-                x: this.width/2,
+                x: this.width / 2,
                 y: -this.height + 50
             },
             width: 50,
@@ -40,20 +43,46 @@ export class Sprite {
         this.score = 0;
     }
 
+    setSprite(sprite) {
+        const nextSprite = this.sprites[sprite];
+
+        if (!nextSprite || this.currentSprite === nextSprite) return;
+
+        console.log('Trocando para:', sprite);
+
+        this.currentSprite = nextSprite;
+        this.image.src = nextSprite.src;
+        this.totalFrames = nextSprite.totalFrames;
+        this.framesPerSprite = nextSprite.framesPerSprite;
+        this.currentFrame = 0;
+        this.elapseTime = 0;
+    }
+
     draw() {
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
 
-        if(this.direction === -1) {
+        if (this.direction === -1) {
             ctx.scale(-1, 1);
         }
 
-        ctx.fillRect(-this.width / 2, -this.height, this.width, this.height);
+        //ctx.fillRect(-this.width / 2, -this.height, this.width, this.height);
+        ctx.drawImage(
+            this.image,
+            this.currentFrame * (this.image.width / this.totalFrames),
+            0,
+            this.image.width / this.totalFrames,
+            this.image.height,
+            -(this.currentSprite === this.sprites.attack ? this.width : this.width / 2),
+            -this.height,
+            this.currentSprite === this.sprites.attack ? this.width * 2 : this.width,
+            this.height
+        );
 
         this.attackBox.position.x = this.width / 2;
         this.attackBox.position.y = -this.height + 50;
 
-        if(this.isAttacking) { 
+        /*if (this.isAttacking) {
             ctx.fillStyle = 'yellow';
             ctx.fillRect(
                 this.attackBox.position.x,
@@ -61,31 +90,49 @@ export class Sprite {
                 this.attackBox.width,
                 this.attackBox.height
             )
-        }
+        }*/
 
         ctx.restore();
     }
 
+    animateSprite() {
+        this.elapseTime++;
+
+        if (this.elapseTime >= this.framesPerSprite) {
+            if (this.currentFrame < this.totalFrames - 1) {
+                this.currentFrame++;
+            }
+            this.elapseTime = 0;
+        }
+    }
+
     update() {
         this.draw()
+        this.animateSprite();
         
         this.position.y += this.velocity.y;
+        const groundY = canvas.height - altura_chao;
+
         this.position.x += this.velocity.x;
 
-        if(this.position.x - this.width/2 <= 0) {
-            this.position.x = this.width/2
+        if (this.position.x - this.width / 2 <= 0) {
+            this.position.x = this.width / 2;
         }
-        if(this.position.x + this.width/2 >= canvas.width) {
+
+        if (this.position.x + this.width / 2 >= canvas.width) {
             this.position.x = canvas.width - this.width / 2;
         }
 
-        if(this.position.y + this.velocity.y >= canvas.height) {
+        if (this.position.y >= groundY) {
+            this.position.y = groundY;
             this.velocity.y = 0;
-            this.position.y = canvas.height;
+            this.estaNoChao = true;
+        } else {
+            this.velocity.y += gravity;
+            this.estaNoChao = false;
         }
-        else {
-            this.velocity.y += gravity
-        }
+
+        this.draw();
     }
 
     attack() {
@@ -93,13 +140,13 @@ export class Sprite {
 
         setTimeout(() => {
             this.isAttacking = false;
-        }, 100)
+        }, 500)
     }
 
     updateHP(target) {
         const damage = this.damage;
 
-        if(target.health <= 0) {
+        if (target.health <= 0) {
             target.health = 0;
         }
 

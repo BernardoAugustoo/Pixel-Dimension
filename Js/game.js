@@ -53,13 +53,30 @@ function animate() {
 
     player.velocity.x = 0;
 
-    if (keys.a.pressed && lastKey === 'a') {
+    if(player.health <= 0) {
+        player.setSprite('death');
+    }
+    else if(player.isAttacking) {
+        player.setSprite('attack');
+        console.log('Frame atual:', player.currentFrame);
+        console.log('Total de frames:', player.totalFrames);
+        console.log('Tempo:', player.elapseTime);
+    }
+    else if(!player.estaNoChao) {
+        player.setSprite('jump');
+    }
+    else if (keys.a.pressed && lastKey === 'a') {
         player.velocity.x = -4;
         player.direction = -1;
+        player.setSprite('walk');
     }
     else if (keys.d.pressed && lastKey === 'd') {
         player.velocity.x = 4;
         player.direction = 1;
+        player.setSprite('walk');
+    }
+    else {
+        player.setSprite('idle');
     }
 
     if (player.isAttacking && checkCollision({ attacker: player, target: enemy })) {
