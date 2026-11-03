@@ -2,10 +2,11 @@ import { canvas, ctx } from "./canvas.js";
 import { player } from './player.js'
 import { enemy } from './enemy.js';
 import { checkCollision } from './collision.js'
+import { groundY } from "./sprite.js";
 
 const background = new Image();
 
-//Aqui troca os fundo
+//Aqui troca os fundos
 background.src = "Imgs/Background-Phases/Phase4-HK.jpg"
 
 canvas.width = window.innerWidth;
@@ -53,38 +54,52 @@ function animate() {
 
     player.velocity.x = 0;
 
+    if(keys.a.pressed && lastKey === 'a') {
+        player.velocity.x = -4;
+        player.direction = -1;
+    }
+    else if(keys.d.pressed && lastKey === 'd') {
+        player.velocity.x = 4;
+        player.direction = 1;
+    }
+    else {
+        player.velocity.x = 0;
+    }
+
     if(player.health <= 0) {
+        player.offset = {x: 0, y: 18};
+        
         player.setSprite('death');
+
+        player.position.y = groundY;
+        player.velocity.y = 0;
+        player.velocity.x = 0;
+        player.direction = 1;
     }
     else if(player.isAttacking) {
         player.setSprite('attack');
-        console.log('Frame atual:', player.currentFrame);
-        console.log('Total de frames:', player.totalFrames);
-        console.log('Tempo:', player.elapseTime);
     }
     else if(!player.estaNoChao) {
+        player.offset = {x: 0, y: 18};
+        
         player.setSprite('jump');
     }
-    else if (keys.a.pressed && lastKey === 'a') {
-        player.velocity.x = -4;
-        player.direction = -1;
-        player.setSprite('walk');
-    }
-    else if (keys.d.pressed && lastKey === 'd') {
-        player.velocity.x = 4;
-        player.direction = 1;
+    else if(player.velocity.x !== 0){
+        player.offset = {x: 0, y: 30};
+
         player.setSprite('walk');
     }
     else {
-        player.setSprite('idle');
+        player.offset = {x: 0, y: 18};
+
+        player.setSprite('idle')
     }
 
     if (player.isAttacking && checkCollision({ attacker: player, target: enemy })) {
         player.isAttacking = false;
-        console.log('JOGADOR ATACANDO!');
+        player.updateHP(enemy);
     }
     if (enemy.isAttacking && checkCollision({ attacker: enemy, target: player })) {
-        enemy.update();
         enemy.isAttacking = false;
         enemy.updateHP(player);
     }

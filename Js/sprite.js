@@ -8,9 +8,10 @@ ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 const gravity = 0.5;
 const altura_chao = 155;
+export const groundY = canvas.height - altura_chao;
 
 export class Sprite {
-    constructor({position, velocity, sprites}) {
+    constructor({position, velocity, sprites, offset = {x: 0, y: 0}}) {
         this.position = position;
         this.velocity = velocity;
 
@@ -20,9 +21,10 @@ export class Sprite {
         if(this.currentSprite) {
             this.image.src = this.currentSprite.src;
         }
+        this.offset = offset;
 
-        this.width = 50;
-        this.height = 150;
+        this.width = 70;
+        this.height = 190;
 
         this.currentFrame = 0;
         this.elapseTime = 0;
@@ -37,9 +39,10 @@ export class Sprite {
             width: 50,
             height: 30
         };
-        this.isAttacking;
+        this.isAttacking = false;
         this.direction = 1;
         this.health = 100;
+        this.isDead = false;
         this.score = 0;
     }
 
@@ -59,6 +62,10 @@ export class Sprite {
     }
 
     draw() {
+        if(this.isDead) {
+            return;
+        }
+        
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
 
@@ -73,8 +80,8 @@ export class Sprite {
             0,
             this.image.width / this.totalFrames,
             this.image.height,
-            -(this.currentSprite === this.sprites.attack ? this.width : this.width / 2),
-            -this.height,
+            -(this.currentSprite === this.sprites.attack ? this.width : this.width / 2) + this.offset.x,
+            -this.height + this.offset.y,
             this.currentSprite === this.sprites.attack ? this.width * 2 : this.width,
             this.height
         );
@@ -102,6 +109,11 @@ export class Sprite {
             if (this.currentFrame < this.totalFrames - 1) {
                 this.currentFrame++;
             }
+            else {
+                if (this.currentSprite.loop) {
+                    this.currentFrame = 0;
+                }
+            }
             this.elapseTime = 0;
         }
     }
@@ -111,7 +123,6 @@ export class Sprite {
         this.animateSprite();
         
         this.position.y += this.velocity.y;
-        const groundY = canvas.height - altura_chao;
 
         this.position.x += this.velocity.x;
 
@@ -148,6 +159,10 @@ export class Sprite {
 
         if (target.health <= 0) {
             target.health = 0;
+
+            target.isDead = true;
+
+            return;
         }
 
         target.health -= damage;

@@ -1,12 +1,13 @@
 import { canvas } from "./canvas.js";
 import { Sprite } from "./sprite.js";
+import { groundY } from "./sprite.js";
 
 let enemyCanAttack = true;
-const enemyAttackCooldown = 300;
+const enemyAttackCooldown = 600;
 
 export class Enemy extends Sprite {
-    constructor({position, velocity}) {
-        super({position, velocity});
+    constructor({position, velocity, sprites, offset = {x: 0, y: 0}}) {
+        super({position, velocity, sprites, offset: {x: 0, y: 0}});
 
         this.state = "MOVING";
 
@@ -77,8 +78,35 @@ export class Enemy extends Sprite {
                 if (this.distanceToPlayer > this.attackRange) {
                     this.state = "CHASING"
                 }
-                
+
+                if(player.health <= 0) {
+                    this.state = "MOVING";
+                }
                 break;
+        }
+
+        if(enemy.health <= 0) {
+                enemy.offset = {x: 0, y: 18};
+                
+                enemy.setSprite('death');
+        
+                enemy.position.y = groundY;
+                enemy.velocity.y = 0;
+                enemy.velocity.x = 0;
+                enemy.direction = 1;
+        }
+        else if (enemy.state === 'ATTACKING') {
+            enemy.offset = {x: 0, y: 18};
+
+            enemy.setSprite('attack');
+        }
+        else if (enemy.state === 'CHASING' || enemy.state === 'MOVING') {
+            enemy.offset = {x: 0, y: 30};
+            
+            enemy.setSprite('walk');
+        }
+        else {
+            enemy.setSprite('idle');
         }
     }
 }
@@ -92,6 +120,38 @@ export const enemy = new Enemy({
         x: 3,
         y: 0
     },
+    sprites: {
+        idle: {
+            src: 'Imgs/Ghost imgs/Ghost-idle.png',
+            totalFrames: 7,
+            framesPerSprite: 10,
+            loop: true
+        },
+        walk: {
+            src: 'Imgs/Ghost imgs/Ghost-walk.png',
+            totalFrames: 8,
+            framesPerSprite: 10,
+            loop: true
+        },
+        jump: {
+            src: 'Imgs/Ghost imgs/Ghost-jump.png',
+            totalFrames: 7,
+            framesPerSprite: 10,
+            loop: true
+        }, 
+        attack: {
+            src: 'Imgs/Ghost imgs/Ghost-attack.png',
+            totalFrames: 6,
+            framesPerSprite: 10,
+            loop: false
+        },
+        death: {
+            src: 'Imgs/Ghost imgs/Ghost-death.png',
+            totalFrames: 7,
+            framesPerSprite: 10,
+            loop: false
+        }
+    }
 })
 
 enemy.damage = 25;
