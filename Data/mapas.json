@@ -4,28 +4,28 @@
             "id": 1,
             "nome": "Minecraft",
             "background": "Imgs/Background-Phases/Phase1-Minecraft.jpg",
-            "alturaChao": 600,
+            "alturaChao": 189,
             "gravidade": 0.5
         },
         {
             "id": 2,
             "nome": "Fortnite",
             "background": "Imgs/Background-Phases/Phase2-Fortnite.jpg",
-            "alturaChao": 600,
+            "alturaChao": 140,
             "gravidade": 0.5
         },
         {
             "id": 3,
             "nome": "The Last of Us",
             "background": "Imgs/Background-Phases/Phase3-TLOU.jpg",
-            "alturaChao": 600,
+            "alturaChao": 175,
             "gravidade": 0.5
         },
         {
             "id": 4,
             "nome": "Hollow Knight",
             "background": "Imgs/Background-Phases/Phase4-HK.jpg",
-            "alturaChao": 600,
+            "alturaChao": 155,
             "gravidade": 0.5
         }
     ]

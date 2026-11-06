@@ -22,7 +22,6 @@ carregarMapas().then(mapas => {
 const background = new Image();
 
 let mapasDisponiveis = [];
-let mapaAtual = null;
 
 // Função troca de mapas
 function trocarMapa(id) {
@@ -50,7 +49,7 @@ carregarMapas().then(mapas => {
 
     mapasDisponiveis = mapas;
 
-    trocarMapa(3);
+    trocarMapa(4);
 });
 
 canvas.width = window.innerWidth;
