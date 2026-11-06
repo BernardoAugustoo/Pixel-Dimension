@@ -103,6 +103,12 @@ function animate() {
         enemy.isAttacking = false;
         enemy.updateHP(player);
     }
+    if (player.health <= 0) {
+        enemy.state = "WIN";
+    }
+    if(enemy.health <= 0) {
+        enemy.state = "DEAD";
+    }
 }
 
 animate()

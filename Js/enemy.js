@@ -3,7 +3,7 @@ import { Sprite } from "./sprite.js";
 import { groundY } from "./sprite.js";
 
 let enemyCanAttack = true;
-const enemyAttackCooldown = 600;
+const enemyAttackCooldown = 800;
 
 export class Enemy extends Sprite {
     constructor({position, velocity, sprites, offset = {x: 0, y: 0}}) {
@@ -83,6 +83,11 @@ export class Enemy extends Sprite {
                     this.state = "MOVING";
                 }
                 break;
+            case "DEAD":
+                this.damage = 0;
+                this.health = 0;
+            case "WIN":
+                this.velocity.x = 0;
         }
 
         if(enemy.health <= 0) {
@@ -143,7 +148,7 @@ export const enemy = new Enemy({
             src: 'Imgs/Ghost imgs/Ghost-attack.png',
             totalFrames: 6,
             framesPerSprite: 10,
-            loop: false
+            loop: true
         },
         death: {
             src: 'Imgs/Ghost imgs/Ghost-death.png',

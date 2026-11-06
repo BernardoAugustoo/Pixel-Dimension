@@ -2,7 +2,7 @@ import { Sprite } from "./sprite.js";
 
 export const player = new Sprite({
     position: {
-        x: 200,
+        x: 0,
         y: 0
     },
     velocity: {
