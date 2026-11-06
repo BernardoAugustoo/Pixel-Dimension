@@ -17,11 +17,16 @@ html, body {
     position: fixed;
     right: 3%;
     top: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 30px;
+    border: 3px solid rgba(255, 255, 255, 0.6);;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .player-name-div {
@@ -62,4 +67,24 @@ html, body {
     height: 100%;
     border-radius: 20px;
     background-color: lightgreen;
+}
+
+.health-bar p {
+    display: block;
+}
+
+#container-health {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content:center;
+    height: fit-content;
+    margin: 0;
+}
+
+#container-health p{
+    font-size: 25px;
+    font-family: "Press Start 2P";
+    color: white;
+    margin: 0;
 }
