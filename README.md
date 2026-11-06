@@ -26,24 +26,6 @@ A proposta é criar um jogo de plataforma 2D com visão lateral, no qual o jogad
 | Framework CSS | Construção e organização da interface |
 | Git e GitHub  | Controle de versão e colaboração      |
 
-## 🚀 Como executar o projeto
-
-1. Clone este repositório:
-
-   ```bash
-   git clone URL_DO_REPOSITORIO
-   ```
-
-2. Entre na pasta do projeto:
-
-   ```bash
-   cd NOME_DO_REPOSITORIO
-   ```
-
-3. Abra o arquivo `index.html` no navegador ou utilize a extensão **Live Server** no Visual Studio Code.
-
-> Durante o desenvolvimento, recomendamos utilizar o Live Server para facilitar os testes e a atualização da aplicação.
-
 ## 👥 Equipe de desenvolvimento
 
 Este projeto está sendo desenvolvido em grupo.
