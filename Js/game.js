@@ -2,12 +2,56 @@ import { canvas, ctx } from "./canvas.js";
 import { player } from './player.js'
 import { enemy } from './enemy.js';
 import { checkCollision } from './collision.js'
-import { groundY } from "./sprite.js";
+import { groundY, configurarCenario } from "./sprite.js";
+import { carregarMapas } from './mapa.js';
 
-const background = new Image();
+carregarMapas().then(mapas => {
+
+    const mapaSelecionado = mapas.find(mapa => mapa.id === 4);
+
+    if (!mapaSelecionado) {
+        console.error('Mapa não encontrado!');
+        return;
+    }
+
+    background.src = mapaSelecionado.background;
+
+});
 
 //Aqui troca os fundos
-background.src = "Imgs/Background-Phases/Phase4-HK.jpg"
+const background = new Image();
+
+let mapasDisponiveis = [];
+let mapaAtual = null;
+
+// Função troca de mapas
+function trocarMapa(id) {
+
+    const mapaSelecionado = mapasDisponiveis.find(
+        mapa => mapa.id === id
+    );
+
+    if (!mapaSelecionado) {
+        console.error('Mapa não encontrado!');
+        return;
+    }
+
+    background.src = mapaSelecionado.background;
+
+    configurarCenario(mapaSelecionado);
+
+    mapaAtual = mapaSelecionado;
+}
+
+// Carregamento das configurações
+carregarMapas().then(mapas => {
+
+    if (!mapas) return;
+
+    mapasDisponiveis = mapas;
+
+    trocarMapa(3);
+});
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -35,13 +79,15 @@ let lastKey;
 function animate() {
     window.requestAnimationFrame(animate);
 
-    ctx.drawImage(
-        background,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
+    if (background.complete && background.naturalWidth > 0) {
+        ctx.drawImage(
+            background,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+    }
 
 
     ctx.fillStyle = 'blue'
@@ -54,11 +100,11 @@ function animate() {
 
     player.velocity.x = 0;
 
-    if(keys.a.pressed && lastKey === 'a') {
+    if (keys.a.pressed && lastKey === 'a') {
         player.velocity.x = -4;
         player.direction = -1;
     }
-    else if(keys.d.pressed && lastKey === 'd') {
+    else if (keys.d.pressed && lastKey === 'd') {
         player.velocity.x = 4;
         player.direction = 1;
     }
@@ -66,9 +112,9 @@ function animate() {
         player.velocity.x = 0;
     }
 
-    if(player.health <= 0) {
-        player.offset = {x: 0, y: 18};
-        
+    if (player.health <= 0) {
+        player.offset = { x: 0, y: 18 };
+
         player.setSprite('death');
 
         player.position.y = groundY;
@@ -76,21 +122,21 @@ function animate() {
         player.velocity.x = 0;
         player.direction = 1;
     }
-    else if(player.isAttacking) {
+    else if (player.isAttacking) {
         player.setSprite('attack');
     }
-    else if(!player.estaNoChao) {
-        player.offset = {x: 0, y: 18};
-        
+    else if (!player.estaNoChao) {
+        player.offset = { x: 0, y: 18 };
+
         player.setSprite('jump');
     }
-    else if(player.velocity.x !== 0){
-        player.offset = {x: 0, y: 30};
+    else if (player.velocity.x !== 0) {
+        player.offset = { x: 0, y: 30 };
 
         player.setSprite('walk');
     }
     else {
-        player.offset = {x: 0, y: 18};
+        player.offset = { x: 0, y: 18 };
 
         player.setSprite('idle')
     }
@@ -106,7 +152,7 @@ function animate() {
     if (player.health <= 0) {
         enemy.state = "WIN";
     }
-    if(enemy.health <= 0) {
+    if (enemy.health <= 0) {
         enemy.state = "DEAD";
     }
 }
