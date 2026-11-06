@@ -6,9 +6,19 @@ canvas.height = window.innerHeight;
 
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-const gravity = 0.5;
-const altura_chao = 155;
-export const groundY = canvas.height - altura_chao;
+let gravity = 0.5;
+let altura_chao = 155;
+
+export let groundY = canvas.height - altura_chao;
+
+// Atualiza o cenário
+export function configurarCenario(configuracao) {
+
+    gravity = configuracao.gravidade;
+    altura_chao = configuracao.alturaChao;
+
+    groundY = canvas.height - altura_chao;
+}
 
 export class Sprite {
     constructor({position, velocity, sprites, offset = {x: 0, y: 0}}) {
