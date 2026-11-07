@@ -5,27 +5,19 @@ import { checkCollision } from './collision.js'
 import { groundY, configurarCenario } from "./sprite.js";
 import { carregarMapas } from './mapa.js';
 
-carregarMapas().then(mapas => {
-
-    const mapaSelecionado = mapas.find(mapa => mapa.id === 4);
-
-    if (!mapaSelecionado) {
-        console.error('Mapa não encontrado!');
-        return;
-    }
-
-    background.src = mapaSelecionado.background;
-
-});
-
 //Aqui troca os fundos
 const background = new Image();
 
 let mapasDisponiveis = [];
+let mapaAtual = null;
+let transicaoEmAndamento = false;
+let opacidadeTransicao = 0;
+let faseTransicao = "nenhuma";
+const velocidadeTransicao = 0.015;
+let tempoPausa = 0;
+const duracaoPausa = 120;
 
-// Função troca de mapas
-function trocarMapa(id) {
-
+function trocarMapa(id, aoCarregar = null) {
     const mapaSelecionado = mapasDisponiveis.find(
         mapa => mapa.id === id
     );
@@ -35,21 +27,107 @@ function trocarMapa(id) {
         return;
     }
 
+    background.onload = () => {
+        console.log('Imagem carregada:', mapaSelecionado.nome);
+
+        if (aoCarregar) {
+            aoCarregar();
+        }
+    };
+
     background.src = mapaSelecionado.background;
 
     configurarCenario(mapaSelecionado);
 
     mapaAtual = mapaSelecionado;
+
+    console.log('Mapa selecionado:', mapaAtual.nome);
 }
 
-// Carregamento das configurações
+function avancarMapa() {
+    if (transicaoEmAndamento || enemy.health > 0) {
+        return;
+    }
+
+    if (mapaAtual.id >= mapasDisponiveis.length) {
+        console.log("Todas as fases foram concluídas!");
+        return;
+    }
+
+    transicaoEmAndamento = true;
+    faseTransicao = "saida";
+}
+
+
+function atualizarTransicao() {
+
+    if (faseTransicao === "saida") {
+
+        opacidadeTransicao += velocidadeTransicao;
+
+        if (opacidadeTransicao >= 1) {
+            opacidadeTransicao = 1;
+
+            faseTransicao = "carregando";
+
+            trocarMapa(mapaAtual.id + 1, () => {
+                tempoPausa = 0;
+                faseTransicao = "pausa";
+            });
+
+            player.health = 100;
+            player.position.x = 200;
+            player.position.y = groundY;
+            player.velocity.x = 0;
+            player.velocity.y = 0;
+            player.estaNoChao = true;
+            player.isAttacking = false;
+            player.direction = 1;
+
+            enemy.health = 100;
+            enemy.damage = 25;
+            enemy.state = "MOVING";
+            enemy.position.x = canvas.width - enemy.width;
+            enemy.position.y = groundY;
+            enemy.velocity.x = 3;
+            enemy.velocity.y = 0;
+            enemy.direction = -1;
+            enemy.isAttacking = false;
+        }
+
+    }
+
+    else if (faseTransicao === "pausa") {
+
+        tempoPausa++;
+
+        if (tempoPausa >= duracaoPausa) {
+            faseTransicao = "entrada";
+        }
+    }
+
+    else if (faseTransicao === "entrada") {
+
+        opacidadeTransicao -= velocidadeTransicao;
+
+        if (opacidadeTransicao <= 0) {
+            opacidadeTransicao = 0;
+            faseTransicao = "nenhuma";
+            transicaoEmAndamento = false;
+        }
+    }
+
+    ctx.fillStyle = `rgba(0, 0, 0, ${opacidadeTransicao})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
 carregarMapas().then(mapas => {
 
     if (!mapas) return;
 
     mapasDisponiveis = mapas;
 
-    trocarMapa(4);
+    trocarMapa(1);
 });
 
 canvas.width = window.innerWidth;
@@ -87,7 +165,6 @@ function animate() {
             canvas.height
         );
     }
-
 
     ctx.fillStyle = 'blue'
     player.update();
@@ -153,7 +230,10 @@ function animate() {
     }
     if (enemy.health <= 0) {
         enemy.state = "DEAD";
+        avancarMapa();
     }
+
+      atualizarTransicao();
 }
 
 animate()

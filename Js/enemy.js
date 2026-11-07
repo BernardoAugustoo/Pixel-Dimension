@@ -86,8 +86,11 @@ export class Enemy extends Sprite {
             case "DEAD":
                 this.damage = 0;
                 this.health = 0;
+                this.velocity.x = 0;
+                break;
             case "WIN":
                 this.velocity.x = 0;
+                break;
         }
 
         if(enemy.health <= 0) {
@@ -161,4 +164,3 @@ export const enemy = new Enemy({
 
 enemy.damage = 25;
 window.enemy = enemy;
-
