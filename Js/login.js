@@ -37,7 +37,7 @@ form.addEventListener('submit', function (event) {
 
 referencesButton.addEventListener('click', function () {
 
-    window.location.href = 'referencias.html';
+    window.location.href = 'references.html';
 
 });
 
