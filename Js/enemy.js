@@ -17,6 +17,7 @@ export class Enemy extends Sprite {
         this.rightLimit = canvas.width - this.width / 2;
 
         this.rangeDistance = 400;
+        this.damage = 10;
         this.attackRange = 95;
     }
     
@@ -63,6 +64,8 @@ export class Enemy extends Sprite {
 
                     enemyCanAttack = false;
 
+                    this.damage = 10;
+                    
                     setTimeout(() => {
                         enemyCanAttack = true
                     }, enemyAttackCooldown)
@@ -93,74 +96,28 @@ export class Enemy extends Sprite {
                 break;
         }
 
-        if(enemy.health <= 0) {
-                enemy.offset = {x: 0, y: 18};
+        if(this.health <= 0) {
+                this.offset = {x: 0, y: 18};
                 
-                enemy.setSprite('death');
+                this.setSprite('death');
         
-                enemy.position.y = groundY;
-                enemy.velocity.y = 0;
-                enemy.velocity.x = 0;
-                enemy.direction = 1;
+                this.position.y = groundY;
+                this.velocity.y = 0;
+                this.velocity.x = 0;
+                this.direction = 1;
         }
-        else if (enemy.state === 'ATTACKING') {
-            enemy.offset = {x: 0, y: 18};
+        else if (this.state === 'ATTACKING') {
+            this.offset = {x: 0, y: 18};
 
-            enemy.setSprite('attack');
+            this.setSprite('attack');
         }
-        else if (enemy.state === 'CHASING' || enemy.state === 'MOVING') {
-            enemy.offset = {x: 0, y: 30};
+        else if (this.state === 'CHASING' || this.state === 'MOVING') {
+            this.offset = {x: 0, y: 30};
             
-            enemy.setSprite('walk');
+            this.setSprite('walk');
         }
         else {
-            enemy.setSprite('idle');
+            this.setSprite('idle');
         }
     }
 }
-
-export const enemy = new Enemy({
-    position: {
-        x: 800,
-        y: 0
-    },
-    velocity: {
-        x: 3,
-        y: 0
-    },
-    sprites: {
-        idle: {
-            src: 'Imgs/Ghost imgs/Ghost-idle.png',
-            totalFrames: 7,
-            framesPerSprite: 10,
-            loop: true
-        },
-        walk: {
-            src: 'Imgs/Ghost imgs/Ghost-walk.png',
-            totalFrames: 8,
-            framesPerSprite: 10,
-            loop: true
-        },
-        jump: {
-            src: 'Imgs/Ghost imgs/Ghost-jump.png',
-            totalFrames: 7,
-            framesPerSprite: 10,
-            loop: true
-        }, 
-        attack: {
-            src: 'Imgs/Ghost imgs/Ghost-attack.png',
-            totalFrames: 6,
-            framesPerSprite: 10,
-            loop: true
-        },
-        death: {
-            src: 'Imgs/Ghost imgs/Ghost-death.png',
-            totalFrames: 7,
-            framesPerSprite: 10,
-            loop: false
-        }
-    }
-})
-
-enemy.damage = 25;
-window.enemy = enemy;

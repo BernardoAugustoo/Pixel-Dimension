@@ -1,6 +1,6 @@
 import { canvas, ctx } from "./canvas.js";
 import { player } from './player.js'
-import { enemy } from './enemy.js';
+import { Enemy } from './enemy.js';
 import { checkCollision } from './collision.js'
 import { groundY, configurarCenario } from "./sprite.js";
 import { carregarMapas } from './mapa.js';
@@ -152,6 +152,59 @@ const keys = {
 }
 
 let lastKey;
+let enemies = [];
+
+const spawnEnemies = (positionX) => {
+    const enemy = new Enemy({
+        position: {
+            x: positionX,
+            y: 0
+        },
+        velocity: {
+            x: 3,
+            y: 0
+        },
+        sprites: {
+            idle: {
+                src: 'Imgs/Ghost imgs/Ghost-idle.png',
+                totalFrames: 7,
+                framesPerSprite: 10,
+                loop: true
+            },
+            walk: {
+                src: 'Imgs/Ghost imgs/Ghost-walk.png',
+                totalFrames: 8,
+                framesPerSprite: 10,
+                loop: true
+            },
+            jump: {
+                src: 'Imgs/Ghost imgs/Ghost-jump.png',
+                totalFrames: 7,
+                framesPerSprite: 10,
+                loop: true
+            }, 
+            attack: {
+                src: 'Imgs/Ghost imgs/Ghost-attack.png',
+                totalFrames: 6,
+                framesPerSprite: 10,
+                loop: true
+            },
+            death: {
+                src: 'Imgs/Ghost imgs/Ghost-death.png',
+                totalFrames: 7,
+                framesPerSprite: 10,
+                loop: false
+            }
+        }
+    });
+    
+    
+    enemies.push(enemy);
+}
+
+spawnEnemies(500);
+spawnEnemies(800);
+spawnEnemies(1000);
 
 function animate() {
     window.requestAnimationFrame(animate);
@@ -170,7 +223,9 @@ function animate() {
     player.update();
 
     ctx.fillStyle = 'red'
-    enemy.updateEnemy(player);
+    enemies.forEach(enemy => {
+        enemy.updateEnemy(player);
+    })
 
     healthPointsEL.style.width = player.health + '%';
 
@@ -217,23 +272,26 @@ function animate() {
         player.setSprite('idle')
     }
 
-    if (player.isAttacking && checkCollision({ attacker: player, target: enemy })) {
-        player.isAttacking = false;
-        player.updateHP(enemy);
-    }
-    if (enemy.isAttacking && checkCollision({ attacker: enemy, target: player })) {
-        enemy.isAttacking = false;
-        enemy.updateHP(player);
-    }
-    if (player.health <= 0) {
-        enemy.state = "WIN";
-    }
-    if (enemy.health <= 0) {
-        enemy.state = "DEAD";
-        avancarMapa();
-    }
+    enemies.forEach(enemy => {
+        if (player.isAttacking && checkCollision({ attacker: player, target: enemy })) {
+            player.isAttacking = false;
+            player.updateHP(enemy);
+        }
+        if (enemy.isAttacking && checkCollision({ attacker: enemy, target: player })) {
+            enemy.isAttacking = false;
+            enemy.updateHP(player);
+        }
+        if (player.health <= 0) {
+            enemy.state = "WIN";
+        }
+        if (enemy.health <= 0) {
+            enemy.state = "DEAD";
+            avancarMapa();
+        }
 
-      atualizarTransicao();
+    })
+
+    atualizarTransicao();
 }
 
 animate()
