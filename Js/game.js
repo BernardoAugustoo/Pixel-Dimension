@@ -28,7 +28,6 @@ function trocarMapa(id, aoCarregar = null) {
     }
 
     background.onload = () => {
-        console.log('Imagem carregada:', mapaSelecionado.nome);
 
         if (aoCarregar) {
             aoCarregar();
@@ -45,7 +44,7 @@ function trocarMapa(id, aoCarregar = null) {
 }
 
 function avancarMapa() {
-    if (transicaoEmAndamento || enemy.health > 0) {
+    if (transicaoEmAndamento) {
         return;
     }
 
@@ -75,7 +74,7 @@ function atualizarTransicao() {
                 faseTransicao = "pausa";
             });
 
-            player.health = 100;
+            player.health = 200;
             player.position.x = 200;
             player.position.y = groundY;
             player.velocity.x = 0;
@@ -84,15 +83,17 @@ function atualizarTransicao() {
             player.isAttacking = false;
             player.direction = 1;
 
-            enemy.health = 100;
-            enemy.damage = 25;
-            enemy.state = "MOVING";
-            enemy.position.x = canvas.width - enemy.width;
-            enemy.position.y = groundY;
-            enemy.velocity.x = 3;
-            enemy.velocity.y = 0;
-            enemy.direction = -1;
-            enemy.isAttacking = false;
+            enemies.forEach(enemy => {
+                enemy.health = 100;
+                enemy.damage = 25;
+                enemy.state = "MOVING";
+                enemy.position.x = canvas.width;
+                enemy.position.y = groundY;
+                enemy.velocity.x = 3;
+                enemy.velocity.y = 0;
+                enemy.direction = -1;
+                enemy.isAttacking = false;
+            })
         }
 
     }
@@ -182,7 +183,7 @@ const spawnEnemies = (positionX) => {
                 totalFrames: 7,
                 framesPerSprite: 10,
                 loop: true
-            }, 
+            },
             attack: {
                 src: 'Imgs/Ghost imgs/Ghost-attack.png',
                 totalFrames: 6,
@@ -197,14 +198,16 @@ const spawnEnemies = (positionX) => {
             }
         }
     });
-    
-    
+
+    enemy.id = positionX;
     enemies.push(enemy);
 }
 
 spawnEnemies(500);
-spawnEnemies(800);
-spawnEnemies(1000);
+// spawnEnemies(800);
+// spawnEnemies(1000);
+
+window.enemies = enemies;
 
 function animate() {
     window.requestAnimationFrame(animate);
@@ -272,10 +275,11 @@ function animate() {
         player.setSprite('idle')
     }
 
-    enemies.forEach(enemy => {
+    enemies.forEach((enemy, i) => {
         if (player.isAttacking && checkCollision({ attacker: player, target: enemy })) {
-            player.isAttacking = false;
+
             player.updateHP(enemy);
+            console.log('Enemy ' + i + ' sofreu dano')
         }
         if (enemy.isAttacking && checkCollision({ attacker: enemy, target: player })) {
             enemy.isAttacking = false;
@@ -286,10 +290,16 @@ function animate() {
         }
         if (enemy.health <= 0) {
             enemy.state = "DEAD";
-            avancarMapa();
+            // avancarMapa();
         }
 
     })
+
+    const remainingEnemies = enemies.filter(e => e.health > 0);
+
+    if (remainingEnemies.length === 0) {
+        avancarMapa()
+    }
 
     atualizarTransicao();
 }

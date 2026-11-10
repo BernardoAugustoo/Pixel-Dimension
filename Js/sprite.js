@@ -7,15 +7,15 @@ canvas.height = window.innerHeight;
 ctx.fillRect(0, 0, canvas.width, canvas.height)
 
 let gravity = 0.5;
-let altura_chao = 155;
+let altura_chao;
 
-export let groundY = canvas.height - altura_chao;
+export let groundY;
 
 // Atualiza o cenário
 export function configurarCenario(configuracao) {
 
     gravity = configuracao.gravidade;
-    altura_chao = configuracao.alturaChao;
+    altura_chao = configuracao.alturaChao * canvas.height;
 
     groundY = canvas.height - altura_chao;
 }
@@ -61,8 +61,6 @@ export class Sprite {
 
         if (!nextSprite || this.currentSprite === nextSprite) return;
 
-        console.log('Trocando para:', sprite);
-
         this.currentSprite = nextSprite;
         this.image.src = nextSprite.src;
         this.totalFrames = nextSprite.totalFrames;
@@ -98,7 +96,7 @@ export class Sprite {
 
         this.attackBox.position.x = this.width / 2;
         this.attackBox.position.y = -this.height + 50;
-
+        this.position.y = groundY;
         /*if (this.isAttacking) {
             ctx.fillStyle = 'yellow';
             ctx.fillRect(
@@ -152,8 +150,6 @@ export class Sprite {
             this.velocity.y += gravity;
             this.estaNoChao = false;
         }
-
-        this.draw();
     }
 
     attack() {
@@ -166,6 +162,7 @@ export class Sprite {
 
     updateHP(target) {
         const damage = this.damage;
+        console.log(target + "levou " + this.damage);
 
         if (target.health <= 0) {
             target.health = 0;
@@ -176,5 +173,11 @@ export class Sprite {
         }
 
         target.health -= damage;
+
+        console.log(target + "vida: " + target.health);
+    }
+
+    toString() {
+        return `sprite ${this.id}`
     }
 }
