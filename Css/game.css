@@ -29,6 +29,13 @@ html, body {
     padding-left: 10px;
 }
 
+.player-stats .score-bar p{
+    display: inline;
+}
+
+.player-stats .score-bar #score-value {
+    color: black;
+}
 .player-name-div {
     color: white;
     font-family: "Press Start 2P";
@@ -41,7 +48,7 @@ html, body {
 }
 
 #player-name {
-    color: gray;
+    color: black;
 }
 
 .score-bar {
@@ -72,6 +79,8 @@ html, body {
 .health-bar p {
     display: block;
 }
+
+
 
 #container-health {
     display: flex;

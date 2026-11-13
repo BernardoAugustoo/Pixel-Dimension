@@ -18,6 +18,9 @@ let tempoPausa = 0;
 const duracaoPausa = 120;
 let enemiesSpawned = false;
 const enemiesQtd = 10;
+let scoreValue;
+
+scoreValue = document.querySelector('#score-value');
 
 function trocarMapa(id, aoCarregar = null) {
     const mapaSelecionado = mapasDisponiveis.find(
@@ -215,8 +218,17 @@ spawnEnemies();
 
 window.enemies = enemies;
 
+setInterval(() => {
+    if(player.health > 0) {
+        scoreValue.innerText = Number(scoreValue.innerText) + 1;
+    }
+
+}, 50)
+
 function animate() {
     window.requestAnimationFrame(animate);
+
+    console.log(scoreValue.innerText)
 
     if (background.complete && background.naturalWidth > 0) {
         ctx.drawImage(
