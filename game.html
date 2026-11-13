@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Css/game.css">
     <title>TP2 - JOGO</title>
 </head>
+
 <body>
     <canvas></canvas>
 
@@ -25,11 +27,29 @@
             </div>
         </div>
     </div>
-        
+
+    <div id="game-over">
+        <div class="game-over-content">
+            <h1>PERDEU</h1>
+
+            <p>Fim de jogo!</p>
+
+            <div class="final-score">
+                Pontuação: <span id="final-score">0</span>
+            </div>
+
+            <div class="game-over-buttons">
+                <button id="restart-button">Tentar novamente</button>
+                <button id="menu-button">Menu principal</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="Js/sprite.js"></script>
     <script type="module" src="Js/player.js"></script>
     <script type="module" src="Js/enemy.js"></script>
     <script type="module" src="Js/collision.js"></script>
     <script type="module" src="Js/game.js"></script>
 </body>
+
 </html>
