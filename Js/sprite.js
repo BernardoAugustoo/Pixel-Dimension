@@ -96,7 +96,6 @@ export class Sprite {
 
         this.attackBox.position.x = this.width / 2;
         this.attackBox.position.y = -this.height + 50;
-        this.position.y = groundY;
         /*if (this.isAttacking) {
             ctx.fillStyle = 'yellow';
             ctx.fillRect(

@@ -16,6 +16,8 @@ let faseTransicao = "nenhuma";
 const velocidadeTransicao = 0.015;
 let tempoPausa = 0;
 const duracaoPausa = 120;
+let enemiesSpawned = false;
+const enemiesQtd = 10;
 
 function trocarMapa(id, aoCarregar = null) {
     const mapaSelecionado = mapasDisponiveis.find(
@@ -39,8 +41,6 @@ function trocarMapa(id, aoCarregar = null) {
     configurarCenario(mapaSelecionado);
 
     mapaAtual = mapaSelecionado;
-
-    console.log('Mapa selecionado:', mapaAtual.nome);
 }
 
 function avancarMapa() {
@@ -49,7 +49,6 @@ function avancarMapa() {
     }
 
     if (mapaAtual.id >= mapasDisponiveis.length) {
-        console.log("Todas as fases foram concluídas!");
         return;
     }
 
@@ -74,7 +73,7 @@ function atualizarTransicao() {
                 faseTransicao = "pausa";
             });
 
-            player.health = 200;
+            player.health = 100;
             player.position.x = 200;
             player.position.y = groundY;
             player.velocity.x = 0;
@@ -83,17 +82,9 @@ function atualizarTransicao() {
             player.isAttacking = false;
             player.direction = 1;
 
-            enemies.forEach(enemy => {
-                enemy.health = 100;
-                enemy.damage = 25;
-                enemy.state = "MOVING";
-                enemy.position.x = canvas.width;
-                enemy.position.y = groundY;
-                enemy.velocity.x = 3;
-                enemy.velocity.y = 0;
-                enemy.direction = -1;
-                enemy.isAttacking = false;
-            })
+            enemies.length = 0;
+            //Chamando a funcao para cada mapa que troca
+            spawnEnemies();
         }
 
     }
@@ -138,8 +129,6 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 let healthPointsEL = document.querySelector("#health-points");
 
-const gravity = 0.5;
-
 const keys = {
     a: {
         pressed: false,
@@ -153,9 +142,12 @@ const keys = {
 }
 
 let lastKey;
+
+//Vetor de inimigos criado aq
 let enemies = [];
 
-const spawnEnemies = (positionX) => {
+//Funcao que adiciona um novo enemy no vetor enemies
+const createEnemies = (positionX) => {
     const enemy = new Enemy({
         position: {
             x: positionX,
@@ -203,9 +195,23 @@ const spawnEnemies = (positionX) => {
     enemies.push(enemy);
 }
 
-spawnEnemies(500);
-// spawnEnemies(800);
-// spawnEnemies(1000);
+//Funcao para spawnar uma "enemiesQtd" inimigos a cada 1seg
+const spawnEnemies = () => {
+    for (let i = 0; i < enemiesQtd; i++) {
+        setTimeout(() => {
+            createEnemies(Math.floor(Math.random() * (canvas.width - canvas.width/2 + 1)) + canvas.width/2);
+
+            if(i === enemiesQtd - 1) {
+                enemiesSpawned = true;
+
+            }
+
+        }, (i + 1) * 1000);
+    }
+}
+
+//Chamando a funcao para o primeiro mapa
+spawnEnemies();
 
 window.enemies = enemies;
 
@@ -222,10 +228,6 @@ function animate() {
         );
     }
 
-    ctx.fillStyle = 'blue'
-    player.update();
-
-    ctx.fillStyle = 'red'
     enemies.forEach(enemy => {
         enemy.updateEnemy(player);
     })
@@ -246,12 +248,14 @@ function animate() {
         player.velocity.x = 0;
     }
 
+    
     if (player.health <= 0) {
         player.offset = { x: 0, y: 18 };
-
+        
         player.setSprite('death');
-
+        
         player.position.y = groundY;
+        player.health = 0;
         player.velocity.y = 0;
         player.velocity.x = 0;
         player.direction = 1;
@@ -261,25 +265,24 @@ function animate() {
     }
     else if (!player.estaNoChao) {
         player.offset = { x: 0, y: 18 };
-
+        
         player.setSprite('jump');
     }
     else if (player.velocity.x !== 0) {
         player.offset = { x: 0, y: 30 };
-
+        
         player.setSprite('walk');
     }
     else {
         player.offset = { x: 0, y: 18 };
-
+        
         player.setSprite('idle')
     }
-
-    enemies.forEach((enemy, i) => {
+    
+    enemies.forEach((enemy) => {
         if (player.isAttacking && checkCollision({ attacker: player, target: enemy })) {
-
+            
             player.updateHP(enemy);
-            console.log('Enemy ' + i + ' sofreu dano')
         }
         if (enemy.isAttacking && checkCollision({ attacker: enemy, target: player })) {
             enemy.isAttacking = false;
@@ -290,21 +293,22 @@ function animate() {
         }
         if (enemy.health <= 0) {
             enemy.state = "DEAD";
-            // avancarMapa();
         }
-
+        
     })
+    
+    player.update();
 
     const remainingEnemies = enemies.filter(e => e.health > 0);
 
-    if (remainingEnemies.length === 0) {
+    window.remainingEnemies = remainingEnemies;
+
+    if (remainingEnemies.length === 0 && enemiesSpawned) {
         avancarMapa()
     }
 
     atualizarTransicao();
 }
-
-animate()
 
 let canAttack = true;
 const attackCooldown = 300;
@@ -323,9 +327,6 @@ window.addEventListener('keydown', (event) => {
             break;
         case 'W':
         case 'w':
-            if (player.position.y === canvas.height) {
-                player.estaNoChao = true;
-            }
             if (player.estaNoChao) {
                 player.velocity.y = -20;
                 player.estaNoChao = false;
@@ -357,6 +358,8 @@ window.addEventListener('keyup', (event) => {
             break;
     }
 })
+
+animate();
 
 let playerNameEl = document.querySelector('#player-name')
 let inserdName = localStorage.getItem('nomeJogador');
