@@ -11,32 +11,32 @@ export const player = new Sprite({
     },
     sprites: {
         idle: {
-            src: 'Imgs/Ghost imgs/Ghost-idle.png',
-            totalFrames: 7,
+            src: 'Imgs/Knight-imgs/idle/',
+            totalFrames: 9,
             framesPerSprite: 10,
             loop: true
         },
         walk: {
-            src: 'Imgs/Ghost imgs/Ghost-walk.png',
+            src: 'Imgs/Knight-imgs/walk/',
             totalFrames: 8,
             framesPerSprite: 10,
             loop: true
         },
         jump: {
-            src: 'Imgs/Ghost imgs/Ghost-jump.png',
-            totalFrames: 7,
+            src: 'Imgs/Knight-imgs/jump/',
+            totalFrames: 6,
             framesPerSprite: 10,
             loop: true
         }, 
         attack: {
-            src: 'Imgs/Ghost imgs/Ghost-attack.png',
-            totalFrames: 6,
-            framesPerSprite: 10,
-            loop: false
+            src: 'Imgs/Knight-imgs/attack/',
+            totalFrames: 8,
+            framesPerSprite: 6,
+            loop: false 
         },
         death: {
-            src: 'Imgs/Ghost imgs/Ghost-death.png',
-            totalFrames: 7,
+            src: 'Imgs/Knight-imgs/death/',
+            totalFrames: 14,
             framesPerSprite: 10,
             loop: false
         },

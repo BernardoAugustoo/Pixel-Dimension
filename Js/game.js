@@ -156,42 +156,31 @@ const createEnemies = (positionX) => {
             x: positionX,
             y: 0
         },
+        enemyHeight: 130,
         velocity: {
             x: 3,
             y: 0
         },
         sprites: {
-            idle: {
-                src: 'Imgs/Ghost imgs/Ghost-idle.png',
-                totalFrames: 7,
-                framesPerSprite: 10,
-                loop: true
-            },
-            walk: {
-                src: 'Imgs/Ghost imgs/Ghost-walk.png',
-                totalFrames: 8,
-                framesPerSprite: 10,
-                loop: true
-            },
-            jump: {
-                src: 'Imgs/Ghost imgs/Ghost-jump.png',
-                totalFrames: 7,
-                framesPerSprite: 10,
-                loop: true
-            },
-            attack: {
-                src: 'Imgs/Ghost imgs/Ghost-attack.png',
-                totalFrames: 6,
-                framesPerSprite: 10,
-                loop: true
-            },
-            death: {
-                src: 'Imgs/Ghost imgs/Ghost-death.png',
-                totalFrames: 7,
-                framesPerSprite: 10,
-                loop: false
-            }
-        }
+        idle: {
+            src: 'Imgs/Husk-imgs/idle/',
+            totalFrames: 6,
+            framesPerSprite: 10,
+            loop: true
+        },
+        walk: {
+            src: 'Imgs/Husk-imgs/walk/',
+            totalFrames: 7,
+            framesPerSprite: 10,
+            loop: true
+        },
+        attack: {
+            src: 'Imgs/Husk-imgs/attack/',
+            totalFrames: 8,
+            framesPerSprite: 10,
+            loop: false
+        },
+        },
     });
 
     enemy.id = positionX;

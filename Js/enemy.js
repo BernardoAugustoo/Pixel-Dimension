@@ -5,8 +5,10 @@ import { groundY } from "./sprite.js";
 
 
 export class Enemy extends Sprite {
-    constructor({position, velocity, sprites, offset = {x: 0, y: 0}}) {
+    constructor({position, velocity, sprites, offset = {x: 0, y: 0}, enemyHeight = 186}) {
         super({position, velocity, sprites, offset: {x: 0, y: 0}});
+
+        this.enemyHeight = enemyHeight;
 
         this.state = "MOVING";
 

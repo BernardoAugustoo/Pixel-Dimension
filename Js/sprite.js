@@ -27,14 +27,14 @@ export class Sprite {
 
         this.sprites = sprites || {};
         this.currentSprite = this.sprites.idle || null;
-        this.image = new Image();
+        this.images = [];
         if(this.currentSprite) {
-            this.image.src = this.currentSprite.src;
+            this.loadSprite(this.currentSprite);
         }
         this.offset = offset;
 
-        this.width = 70;
-        this.height = 190;
+        this.width = 349;
+        this.height = 186;
 
         this.currentFrame = 0;
         this.elapseTime = 0;
@@ -56,13 +56,27 @@ export class Sprite {
         this.score = 0;
     }
 
+    loadSprite(sprite) {
+    this.images = [];
+
+    const spriteName = Object.keys(this.sprites).find(
+        key => this.sprites[key] === sprite
+    );
+
+    for (let i = 1; i <= sprite.totalFrames; i++) {
+        const image = new Image();
+        image.src = `${sprite.src}${spriteName}-${i}.png`;
+        this.images.push(image);
+    }
+}
+
     setSprite(sprite) {
         const nextSprite = this.sprites[sprite];
 
         if (!nextSprite || this.currentSprite === nextSprite) return;
 
         this.currentSprite = nextSprite;
-        this.image.src = nextSprite.src;
+        this.loadSprite(nextSprite);
         this.totalFrames = nextSprite.totalFrames;
         this.framesPerSprite = nextSprite.framesPerSprite;
         this.currentFrame = 0;
@@ -74,37 +88,33 @@ export class Sprite {
             return;
         }
         
+        const image = this.images[this.currentFrame];
+
+        if(!image || !image.complete || image.naturalWidth === 0) {
+            return;
+        }
+        
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
 
-        if (this.direction === -1) {
+        if (this.direction === 1) {
             ctx.scale(-1, 1);
         }
 
-        //ctx.fillRect(-this.width / 2, -this.height, this.width, this.height);
+        const drawHeight = this.enemyHeight && this.currentSprite !== this.sprites.attack
+        ? this.enemyHeight
+        : this.height;
+        
         ctx.drawImage(
-            this.image,
-            this.currentFrame * (this.image.width / this.totalFrames),
-            0,
-            this.image.width / this.totalFrames,
-            this.image.height,
-            -(this.currentSprite === this.sprites.attack ? this.width : this.width / 2) + this.offset.x,
-            -this.height + this.offset.y,
-            this.currentSprite === this.sprites.attack ? this.width * 2 : this.width,
-            this.height
+            image,
+            -(image.naturalWidth / image.naturalHeight * drawHeight) / 2 + this.offset.x,
+            -drawHeight + this.offset.y,
+            image.naturalWidth / image.naturalHeight * drawHeight,
+            drawHeight
         );
 
         this.attackBox.position.x = this.width / 2;
         this.attackBox.position.y = -this.height + 50;
-        /*if (this.isAttacking) {
-            ctx.fillStyle = 'yellow';
-            ctx.fillRect(
-                this.attackBox.position.x,
-                this.attackBox.position.y,
-                this.attackBox.width,
-                this.attackBox.height
-            )
-        }*/
 
         ctx.restore();
     }
@@ -156,7 +166,7 @@ export class Sprite {
 
         setTimeout(() => {
             this.isAttacking = false;
-        }, 500)
+        }, 1000)
     }
 
     updateHP(target) {
