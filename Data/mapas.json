@@ -13,7 +13,7 @@
             "id": 2,
             "nome": "One Piece",
             "background": "Imgs/Background-Phases/Phase2-OnePiece.jpg",
-            "alturaChao": 0.2,
+            "alturaChao": 0.18,
             "gravidade": 0.5,
             "player": "Luffy",
             "enemy": "Brannew"
@@ -22,7 +22,7 @@
             "id": 3,
             "nome": "Marvel Comics",
             "background": "Imgs/Background-Phases/Phase3-MarvelComics.jpg",
-            "alturaChao": 0.19,
+            "alturaChao": 0.11,
             "gravidade": 0.5,
             "player": "Captain",
             "enemy": "Slysax"
