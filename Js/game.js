@@ -68,7 +68,7 @@ const framesInimigos = {
 const direcoesInimigos = {
     Zombie: 1,
     Brannew: -1,
-    Slysax: 1,
+    Slysax: -1,
     Husk: 1
 };
 
@@ -251,16 +251,17 @@ const createEnemies = (positionX) => {
     const tamanhosInimigos = {
         Zombie: { width: 150, height: 150 },
         Brannew: { width: 160, height: 160 },
-        Slysax: { width: 170, height: 170 },
+        Slysax: { width: 300, height: 500 },
         Husk: { width: 140, height: 140 }
     };
-
-    enemy.id = positionX;
-    enemies.push(enemy);
 
     enemy.width = tamanhosInimigos[nome].width;
     enemy.height = tamanhosInimigos[nome].height;
     enemy.direcaoOriginal = direcoesInimigos[nome];
+
+    enemy.id = positionX;
+    enemies.push(enemy);
+
 }
 
 //Funcao para spawnar uma "enemiesQtd" inimigos a cada 1seg

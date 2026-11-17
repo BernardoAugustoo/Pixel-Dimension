@@ -61,8 +61,8 @@ export function trocarPersonagem(nome, frames) {
     const tamanhos = {
         Plant: { width: 150, height: 150 },
         Luffy: { width: 180, height: 180 },
-        Captain: { width: 160, height: 160 },
-        Knight: { width: 150, height: 150 }
+        Captain: { width: 300, height: 500 },
+        Knight: { width: 350, height: 190 }
     };
 
     const direcaoOriginal = {
