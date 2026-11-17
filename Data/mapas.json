@@ -2,26 +2,26 @@
     "mapas": [
         {
             "id": 1,
-            "nome": "Minecraft",
-            "background": "Imgs/Background-Phases/Phase1-Minecraft.jpg",
-            "alturaChao": 0.2,
+            "nome": "Plants X Zombies",
+            "background": "Imgs/Background-Phases/Phase1-PlantsXZombies.jpg",
+            "alturaChao": 0.18,
             "gravidade": 0.5,
             "player": "Plant",
             "enemy": "Zombie"
         },
         {
             "id": 2,
-            "nome": "Fortnite",
-            "background": "Imgs/Background-Phases/Phase2-Fortnite.jpg",
-            "alturaChao": 0.15,
+            "nome": "One Piece",
+            "background": "Imgs/Background-Phases/Phase2-OnePiece.jpg",
+            "alturaChao": 0.2,
             "gravidade": 0.5,
             "player": "Luffy",
             "enemy": "Brannew"
         },
         {
             "id": 3,
-            "nome": "The Last of Us",
-            "background": "Imgs/Background-Phases/Phase3-TLOU.jpg",
+            "nome": "Marvel Comics",
+            "background": "Imgs/Background-Phases/Phase3-MarvelComics.jpg",
             "alturaChao": 0.19,
             "gravidade": 0.5,
             "player": "Captain",
