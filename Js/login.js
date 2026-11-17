@@ -6,9 +6,9 @@ const loginPanel = document.querySelector('#painel-login');
 const maps = document.querySelectorAll('.mapa');
 
 const themes = [
-    'tema-minecraft',
-    'tema-fortnite',
-    'tema-tlou',
+    'tema-plants-x-zombies',
+    'tema-one-piece',
+    'tema-marvel-comics',
     'tema-hollow-knight'
 ];
 
