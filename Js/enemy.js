@@ -23,6 +23,7 @@ export class Enemy extends Sprite {
         this.rangeDistance = 400;
         this.damage = 30;
         this.attackRange = 95;
+        this.direcaoOriginal = 1;
     }
     
     updateEnemy(player) {
@@ -100,9 +101,6 @@ export class Enemy extends Sprite {
 
         if(this.health <= 0) {
                 this.offset = {x: 0, y: 18};
-                
-                this.setSprite('death');
-        
                 this.position.y = groundY;
                 this.velocity.y = 0;
                 this.velocity.x = 0;

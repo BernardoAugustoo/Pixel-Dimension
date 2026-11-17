@@ -1,5 +1,5 @@
 import { canvas, ctx } from "./canvas.js";
-import { player } from './player.js'
+import { player, trocarPersonagem } from './player.js'
 import { Enemy } from './enemy.js';
 import { checkCollision } from './collision.js'
 import { groundY, configurarCenario } from "./sprite.js";
@@ -7,6 +7,70 @@ import { carregarMapas } from './mapa.js';
 
 //Aqui troca os fundos
 const background = new Image();
+
+const framesPersonagens = {
+    Plant: {
+        idle: 6,
+        walk: 5,
+        jump: 9,
+        attack: 15,
+        death: 7
+    },
+    Luffy: {
+        idle: 6,
+        walk: 14,
+        jump: 6,
+        attack: 16,
+        death: 7
+    },
+    Captain: {
+        idle: 6,
+        walk: 8,
+        jump: 7,
+        attack: 6,
+        death: 6
+    },
+    Knight: {
+        idle: 9,
+        walk: 8,
+        jump: 6,
+        attack: 8,
+        death: 14
+    }
+};
+
+const framesInimigos = {
+    Zombie: {
+        idle: 6,
+        walk: 10,
+        attack: 18
+    },
+
+    Brannew: {
+        idle: 6,
+        walk: 4,
+        attack: 6
+    },
+
+    Slysax: {
+        idle: 7,
+        walk: 8,
+        attack: 5
+    },
+
+    Husk: {
+        idle: 8,
+        walk: 9,
+        attack: 8
+    }
+};
+
+const direcoesInimigos = {
+    Zombie: 1,
+    Brannew: -1,
+    Slysax: 1,
+    Husk: 1
+};
 
 let mapasDisponiveis = [];
 let mapaAtual = null;
@@ -40,11 +104,18 @@ function trocarMapa(id, aoCarregar = null) {
     };
 
     background.src = mapaSelecionado.background;
-
+    
     configurarCenario(mapaSelecionado);
-
+    
     mapaAtual = mapaSelecionado;
+
+    const nomePersonagem = mapaAtual.player;
+    trocarPersonagem(
+        nomePersonagem,
+        framesPersonagens[nomePersonagem]
+    );
 }
+
 
 function avancarMapa() {
     if (transicaoEmAndamento) {
@@ -151,6 +222,19 @@ let enemies = [];
 
 //Funcao que adiciona um novo enemy no vetor enemies
 const createEnemies = (positionX) => {
+    const nome = mapaAtual.enemy;
+    const frames = framesInimigos[nome];
+    const sprites = {};
+
+    Object.keys(frames).forEach(animacao => {
+        sprites[animacao] = {
+            src: `Imgs/${nome}-imgs/${animacao}/`,
+            totalFrames: frames[animacao],
+            framesPerSprite: 10,
+            loop: animacao !== 'attack'
+        };
+    });
+
     const enemy = new Enemy({
         position: {
             x: positionX,
@@ -161,30 +245,22 @@ const createEnemies = (positionX) => {
             x: 3,
             y: 0
         },
-        sprites: {
-        idle: {
-            src: 'Imgs/Husk-imgs/idle/',
-            totalFrames: 6,
-            framesPerSprite: 10,
-            loop: true
-        },
-        walk: {
-            src: 'Imgs/Husk-imgs/walk/',
-            totalFrames: 7,
-            framesPerSprite: 10,
-            loop: true
-        },
-        attack: {
-            src: 'Imgs/Husk-imgs/attack/',
-            totalFrames: 8,
-            framesPerSprite: 10,
-            loop: false
-        },
-        },
+        sprites: sprites
     });
+
+    const tamanhosInimigos = {
+        Zombie: { width: 150, height: 150 },
+        Brannew: { width: 160, height: 160 },
+        Slysax: { width: 170, height: 170 },
+        Husk: { width: 140, height: 140 }
+    };
 
     enemy.id = positionX;
     enemies.push(enemy);
+
+    enemy.width = tamanhosInimigos[nome].width;
+    enemy.height = tamanhosInimigos[nome].height;
+    enemy.direcaoOriginal = direcoesInimigos[nome];
 }
 
 //Funcao para spawnar uma "enemiesQtd" inimigos a cada 1seg

@@ -5,28 +5,36 @@
             "nome": "Minecraft",
             "background": "Imgs/Background-Phases/Phase1-Minecraft.jpg",
             "alturaChao": 0.2,
-            "gravidade": 0.5
+            "gravidade": 0.5,
+            "player": "Plant",
+            "enemy": "Zombie"
         },
         {
             "id": 2,
             "nome": "Fortnite",
             "background": "Imgs/Background-Phases/Phase2-Fortnite.jpg",
             "alturaChao": 0.15,
-            "gravidade": 0.5
+            "gravidade": 0.5,
+            "player": "Luffy",
+            "enemy": "Brannew"
         },
         {
             "id": 3,
             "nome": "The Last of Us",
             "background": "Imgs/Background-Phases/Phase3-TLOU.jpg",
             "alturaChao": 0.19,
-            "gravidade": 0.5
+            "gravidade": 0.5,
+            "player": "Captain",
+            "enemy": "Slysax"
         },
         {
             "id": 4,
             "nome": "Hollow Knight",
             "background": "Imgs/Background-Phases/Phase4-HK.jpg",
             "alturaChao": 0.16,
-            "gravidade": 0.5
+            "gravidade": 0.5,
+            "player": "Knight",
+            "enemy": "Husk"
         }
     ]
 }

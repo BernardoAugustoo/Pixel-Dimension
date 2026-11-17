@@ -97,19 +97,19 @@ export class Sprite {
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
 
-        if (this.direction === 1) {
+        const inverter = this.direction * (this.direcaoOriginal || 1);
+        if (inverter === 1) {
             ctx.scale(-1, 1);
         }
 
-        const drawHeight = this.enemyHeight && this.currentSprite !== this.sprites.attack
-        ? this.enemyHeight
-        : this.height;
-        
+        const drawHeight = this.height;
+        const drawWidth = this.width;
+
         ctx.drawImage(
             image,
-            -(image.naturalWidth / image.naturalHeight * drawHeight) / 2 + this.offset.x,
+            -drawWidth / 2 + this.offset.x,
             -drawHeight + this.offset.y,
-            image.naturalWidth / image.naturalHeight * drawHeight,
+            drawWidth,
             drawHeight
         );
 
